@@ -2,12 +2,16 @@ import streamlit as st
 
 def account_page():
     if "user" in st.session_state:
-        user = st.session_state["user"]
-        # Split display name safely
-        first_name = user.display_name.split()[0] if user.display_name else "Unknown"
-        last_name = user.display_name.split()[1] if len(user.display_name.split()) > 1 else "Unknown"
+        user = st.session_state.get("user")
+
+        display_name = user.display_name if user.display_name else ""
+        name_parts = display_name.split()
+
+        first_name = name_parts[0] if len(name_parts) > 0 else "Admin"
+        last_name = name_parts[1] if len(name_parts) > 1 else "Admin"
+
         
-        st.title(f"Welcome, {first_name} 👋")
+        st.title(f"Welcome, {first_name} ")
         
         # Display account details
         st.subheader("Your Account Overview")
@@ -28,4 +32,4 @@ def account_page():
 
     # Footer Section
     st.markdown("---")
-    st.write("© 2025 Kelvin Njuguna | All rights reserved.")
+    st.write("© 2025 Kelsey Kyla | All rights reserved.")

@@ -51,15 +51,14 @@ def app():
     # Social Media Section
     st.subheader("🌍 Connect with Me")
     st.markdown("""
-    - 📧 **Email**: [n.kelvinnjuguna@gmail.com](mailto:n.kelvinnjuguna@gmail.com)
-    - 💼 **LinkedIn**: [Kelvin Njuguna](https://www.linkedin.com/in/kelvin-njuguna-324b10222/)
-    - 🔗 **GitHub**: [Kelvin340-cloud](https://github.com/kelvin340-cloud)
-    - 🌐 **Portfolio**: [kelvin340-cloud.github.io](https://kelvin340-cloud.github.io/KelvinNjuguna.github.io/)
+    - 📧 **Email**: [kelsykyla2003@gmail.com](mailto:kelsykyla2003@gmail.com)
+    - 💼 **LinkedIn**: [Kelsey Kyla](https://www.linkedin.com/in/kelsey-kyla-568266b8/)
+    
     """)
 
     # Footer Section
     st.markdown("---")
-    st.write("© 2025 Kelvin Njuguna | All rights reserved.")
+    st.write("© 2025 Kelsey Kyla | All rights reserved.")
 
 
 # Formspree endpoint (Replace with your actual endpoint)

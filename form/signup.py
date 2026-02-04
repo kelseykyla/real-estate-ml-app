@@ -15,7 +15,7 @@ def signup_page():
             return base64.b64encode(f.read()).decode("utf-8")
 
     # Convert image to base64
-    img_base64 = get_base64_image('img/background.avif')
+    img_base64 = get_base64_image('img/image.png')
     logo_base64 = get_base64_image('img/Logo1.png')
 
     st.markdown(

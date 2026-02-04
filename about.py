@@ -53,7 +53,7 @@ def app():
     with st.expander("🔹 **Developer Background**", expanded=False):
         st.write(
             """
-            ### **Njoroge Kelvin Njuguna**  
+            ### **KELSEY KYLA OTENG'O**  
             📊 **Data Scientist | Data Analyst | Machine Learning Enthusiast**  
 
             I am passionate about building **data-driven solutions** that optimize decision-making 
@@ -65,10 +65,10 @@ def app():
             - 🗄️ Database Management  
             - 🌎 Web App Development  
 
-            **🌐 [Portfolio Website](https://kelvin340-cloud.github.io/KelvinNjuguna.github.io/)**  
+              
             """
         )
 
     # --- FOOTER ---
     st.markdown("---")
-    st.write("© 2025 PriceScope | Built by Kelvin Njuguna")
+    st.write("© 2025 PriceScope | Built by Kelsey Kyla Oteng'o")

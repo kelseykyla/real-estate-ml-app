@@ -26,64 +26,101 @@ initialize_firebase()
 if "current_page" not in st.session_state:
     st.session_state["current_page"] = "home"  # Default to home page
 
+if "notifications" not in st.session_state:
+    st.session_state["notifications"] = [
+        "🏘 New property listed in Kilimani",
+        "📉 Price drop alert in Westlands",
+        "⭐ A saved property has new photos"
+    ]
+
+if "show_notifications" not in st.session_state:
+    st.session_state["show_notifications"] = False
+
+
+def get_notification_count():
+    # 🔔 Dummy number for now
+    # Later this can come from Supabase per user
+    return 3
+
+
 # Sidebar menu with option menu
 def sidebar_menu():
     with st.sidebar:
-        # Add an image at the top of the sidebar
-        st.image(
-            "./img/Logo1.png", 
-            use_container_width=True, 
-            width=180
-        )
+        st.image("./img/Logo1.png", use_container_width=True)
+
+        options = ['Dashboard', 'Prediction', 'Account', 'About', 'Contact']
+
+        if st.session_state.get("is_admin"):
+            options.append('Admin')
+
+        options.append('Logout')
+
         app = option_menu(
-            menu_title= 'PRICE SCOPE',
-            options=['Home', 'Account', 'About', 'Contact'],
-            icons=['house-fill','person-circle','chat-fill','info-circle-fill'],
+            menu_title='PRICE SCOPE',
+            options=options,
+            icons=['speedometer2','graph-up','person-circle','info-circle','chat-dots','gear','box-arrow-right'],
             menu_icon='🏡',
             default_index=0,
-            styles={
-                "container": {"padding": "5!important", "background-color": 'black'},
-                "icon": {"color": "white", "font-size": "23px"}, 
-                "nav-link": {"color": "white", "font-size": "20px", "text-align": "left", "margin": "0px", "--hover-color": "blue"},
-                "nav-link-selected": {"background-color": "#02ab21"},
-            }
         )
         return app
 
+
+
+
 # Main navigation logic
 def main():
-    # If user is not logged in (either on login or signup page)
-    if st.session_state["current_page"] in ["login", "signup"]:
-        if st.session_state["current_page"] == "signup":
-            signup_page()  # Show signup page
+
+    # NOT LOGGED IN
+    if "user" not in st.session_state:
+
+        if st.session_state["current_page"] == "home":
+            home.home_page()
+
         elif st.session_state["current_page"] == "login":
-            login_page()  # Show login page
-    
-    # If the user is logged in
+            login_page()
+
+        elif st.session_state["current_page"] == "signup":
+            signup_page()
+        
+        # Direct dashboard routing after login
+        if st.session_state["current_page"] == "dashboard":
+            if st.session_state.get("is_admin"):
+                home.admin_dashboard()
+            else:
+                home.dashboard_page()
+            return
+
+
+    # LOGGED IN
     else:
-        # Display the sidebar for logged-in users
         app = sidebar_menu()
 
-        if app == "Home":
-            st.session_state["current_page"] = "home"
-            home.home_page()  # Call the home page function from home.py
+        if app == "Dashboard":
+            if st.session_state.get("is_admin"):
+                home.admin_dashboard()   # 👑 Admin sees admin dashboard
+            else:
+                home.dashboard_page()    # 👤 Normal user sees user dashboard
+
+
+        elif app == "Prediction":
+            home.prediction_page()
+
         elif app == "Account":
-            st.session_state["current_page"] = "account"
-            account_page()  # Account page function (where user details are shown)
+            account_page()
+
         elif app == "About":
-            st.session_state["current_page"] = "about"
-            about.app()  # About page function
+            about.app()
+
         elif app == "Contact":
-            st.session_state["current_page"] = "contact"
-            contact.app()  # Contact page function
-        elif app == "Report":
-            st.session_state["current_page"] = "report"
-            report.app() # type: ignore
+            contact.app()
+
+        elif app == "Admin" and st.session_state.get("is_admin"):
+            home.admin_dashboard()
+
         elif app == "Logout":
-            # Log out the user and reset session state
-            del st.session_state["user"]  # Clear user session data
-            st.session_state["current_page"] = "login"  # Go back to login page
-            st.rerun()  # Rerun the app to reflect changes
+            del st.session_state["user"]
+            st.session_state["current_page"] = "home"
+            st.rerun()
 
 # Run the app
 if __name__ == "__main__":
