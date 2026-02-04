@@ -12,7 +12,6 @@ import home # Import home page function
 import about
 import contact
 import report
-import connection
 from account import account_page  # Import the account page functionality
 from firebase_init import initialize_firebase  # Ensure Firebase initialization
 
