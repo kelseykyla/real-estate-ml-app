@@ -9,20 +9,18 @@
 # If you want prediction form inside dashboard, uncomment the relevant section.
 # I've requested no additional code since all necessary parts are in the provided documents.
 
-from dotenv import load_dotenv
+
 import traceback
 import streamlit as st
 import pickle
 import pandas as pd
 import numpy as np
-import os
 import joblib
 from supabase import create_client, Client
 from io import StringIO
 from datetime import datetime
 import report
 
-load_dotenv()
 # Public Landing Page
 def home_page():
 
