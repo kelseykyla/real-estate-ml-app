@@ -7,4 +7,7 @@ firebase-admin
 python-dotenv
 reportlab
 streamlit-option-menu
-scikit-learn
+scikit-learn==1.3.2
+scipy
+
+
