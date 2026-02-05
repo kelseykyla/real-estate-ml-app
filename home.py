@@ -26,43 +26,62 @@ import report
 def home_page():
 
     st.markdown("""
-    <style>
-    .stButton>button {
-        background-color: #4CAF50;
-        color: white;
-        font-size: 15px;
-        border-radius: 10px;
-        padding: 10px 20px;
-    }
-    .section-card {
-        background-color: #f9f9f9;
-        padding: 22px;
-        border-radius: 14px;
-        margin-bottom: 15px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        height: 100%;
-    }
-    .hero-title {
-        font-size: 38px;
-        font-weight: 700;
-        color: #2e7d32;
-        margin-bottom: 10px;
-    }
-    .hero-sub {
-        font-size: 20px;
-        margin-bottom: 20px;
-    }
-    .stat-box {
-        text-align: center;
-        padding: 15px;
-    }
-    .stat-number {
-        font-size: 28px;
-        font-weight: bold;
-        color: #2e7d32;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+html, body, [class*="css"]  {
+    font-family: 'Inter', sans-serif;
+}
+
+.hero-title {
+    font-size: 44px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+}
+
+.hero-sub {
+    font-size: 18px;
+    color: #4b5563;
+    margin-bottom: 25px;
+}
+
+.section-card {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 16px;
+    margin-bottom: 18px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+    border: 1px solid #f1f1f1;
+}
+
+.stat-box {
+    text-align: center;
+    padding: 18px;
+}
+
+.stat-number {
+    font-size: 30px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.stButton>button {
+    background-color: #111827;
+    color: white;
+    border-radius: 10px;
+    padding: 12px 26px;
+    font-size: 15px;
+    border: none;
+}
+
+.stButton>button:hover {
+    background-color: #000000;
+}
+</style>
+""", unsafe_allow_html=True)
+
 
     # ================= HEADER =================
     col1, col2 = st.columns([3, 1])
@@ -75,7 +94,7 @@ def home_page():
         if "user" in st.session_state:
             user = st.session_state["user"]
             display_name = user.display_name.split()[0] if user.display_name else user.uid
-            st.write(f"Welcome, {display_name} 👋")
+            st.write(f"Welcome, {display_name} ")
         else:
             col3, col4 = st.columns([1, 1])
             with col3:
@@ -98,7 +117,7 @@ def home_page():
 
 
     # ================= TRUST STATS =================
-    st.markdown("### 📊 Platform Insights")
+    st.markdown("###  Platform Insights")
     s1, s2, s3 = st.columns(3)
     with s1:
         st.markdown('<div class="stat-box"><div class="stat-number">10,000+</div>Properties Analyzed</div>', unsafe_allow_html=True)
@@ -110,11 +129,11 @@ def home_page():
     st.markdown("---")
 
     # ================= MARKET TRENDS =================
-    st.markdown("## 📈 What’s Happening in Real Estate Today?")
+    st.markdown("##  What’s Happening in Real Estate Today?")
     trend1, trend2, trend3 = st.columns(3)
 
     with trend1:
-        st.markdown('<div class="section-card"><h4>📊 Rising Rental Demand</h4><p>Urban neighborhoods are experiencing higher rental demand driven by population growth and lifestyle changes.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-card"><h4> Rising Rental Demand</h4><p>Urban neighborhoods are experiencing higher rental demand driven by population growth and lifestyle changes.</p></div>', unsafe_allow_html=True)
 
     with trend2:
         st.markdown('<div class="section-card"><h4>🏗 Data is the New Agent</h4><p>Buyers and renters now rely on analytics instead of guesswork or word-of-mouth pricing.</p></div>', unsafe_allow_html=True)
@@ -125,23 +144,23 @@ def home_page():
     st.markdown("---")
 
     # ================= BENEFITS =================
-    st.markdown("## 🌟 Why Use Our Platform?")
+    st.markdown("##  Why Use Our Platform?")
     b1, b2 = st.columns(2)
 
     with b1:
-        st.markdown('<div class="section-card"><h4>🤖 AI-Powered Accuracy</h4><p>Our model analyzes historical and real-time data to produce reliable estimates.</p><h4>⚡ Instant Results</h4><p>No waiting for agents or manual appraisals.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-card"><h4> AI-Powered Accuracy</h4><p>Our model analyzes historical and real-time data to produce reliable estimates.</p><h4>⚡ Instant Results</h4><p>No waiting for agents or manual appraisals.</p></div>', unsafe_allow_html=True)
 
     with b2:
-        st.markdown('<div class="section-card"><h4>💡 Smarter Decisions</h4><p>Know if a property is overpriced or a good deal before committing.</p><h4>📉 Confidence with Ranges</h4><p>Prediction intervals backed by statistical modeling.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-card"><h4> Smarter Decisions</h4><p>Know if a property is overpriced or a good deal before committing.</p><h4>📉 Confidence with Ranges</h4><p>Prediction intervals backed by statistical modeling.</p></div>', unsafe_allow_html=True)
 
     # ================= CTA =================
     st.markdown("---")
-    st.markdown("### 🔮 Ready to estimate a property's value?")
+    st.markdown("###  Ready to estimate a property's value?")
 
     c1, c2, c3 = st.columns([1,2,1])
     with c2:
         if st.button("Make a Prediction", use_container_width=True):
-            st.session_state["current_page"] = "prediction"
+            st.session_state["current_page"] = "Prediction"
             st.rerun()
 
 st.session_state["notifications"] = []
@@ -196,7 +215,7 @@ def dashboard_page():
     name = user.display_name.split()[0] if user and user.display_name else "User"
 
     st.title("🏡 Your Property Dashboard")
-    st.markdown(f"### Welcome back, **{name}** 👋")
+    st.markdown(f"### Welcome back!, **{name}** ")
 
     # ----------------- LAST LOGIN -----------------
     # Dummy last login (replace with real data from session or Supabase)
@@ -213,7 +232,7 @@ def dashboard_page():
                 '</ul></div>', unsafe_allow_html=True)
 
     # ----------------- RECENTLY VIEWED PROPERTIES -----------------
-    st.markdown("### 👀 Recently Viewed Properties")
+    st.markdown("###  Recently Viewed Properties")
     col1, col2, col3 = st.columns(3)
 
     # Dummy properties (replace with real data from user history in Supabase)
@@ -241,7 +260,7 @@ def dashboard_page():
 
     # ----------------- WHAT’S NEW -----------------
     # Dummy updates
-    st.markdown('<div class="dashboard-card"><h4 class="dashboard-title">🚀 What’s New on PriceScope?</h4>'
+    st.markdown('<div class="dashboard-card"><h4 class="dashboard-title"> What’s New on PriceScope?</h4>'
                 '<ul>'
                 '<li>🧠 Improved AI prediction accuracy</li>'
                 '<li>📊 Added neighborhood trend analysis</li>'
@@ -270,7 +289,7 @@ def dashboard_page():
 
     # ----------------- PREDICT PRICE BUTTON -----------------
     # Navigate to prediction page
-    if st.button("🔮 Predict Property Price"):
+    if st.button(" Predict Property Price"):
         st.session_state["current_page"] = "prediction"
         st.rerun()
 
@@ -284,7 +303,7 @@ def admin_dashboard():
     st.markdown("Overview of system performance and user activity")
 
     st.markdown("---")
-    st.subheader("📊 Platform Statistics")
+    st.subheader(" Platform Statistics")
 
     col1, col2, col3 = st.columns(3)
     col1.metric("👥 Total Registered Users", "1,284")
@@ -292,7 +311,7 @@ def admin_dashboard():
     col3.metric("📈 New Users This Month", "73")
 
     st.markdown("---")
-    st.subheader("📈 Growth Trends")
+    st.subheader(" Growth Trends")
 
     import pandas as pd
     import numpy as np
@@ -324,16 +343,16 @@ def admin_dashboard():
     st.bar_chart(df_listings)
 
     st.markdown("---")
-    st.subheader("📌 Property Insights")
+    st.subheader(" Property Insights")
 
     colA, colB = st.columns(2)
 
     with colA:
-        st.info("🏠 **Last Posted Property**\n\n3 Bedroom Apartment in Kilimani")
+        st.info("**Last Posted Property**\n\n3 Bedroom Apartment in Kilimani")
 
-        st.success("📍 **Most Popular Location**\n\nWestlands")
+        st.success(" **Most Popular Location**\n\nWestlands")
 
-        st.warning("📉 **Least Popular Location**\n\nEmbakasi")
+        st.warning("**Least Popular Location**\n\nEmbakasi")
 
     with colB:
         st.metric("💰 Average Rent Price", "KES 78,500")
@@ -369,7 +388,7 @@ def admin_dashboard():
 
 # Prediction page (kept separate as per your existing structure)
 def prediction_page():
-    st.title("🏠 Property Price Prediction")
+    st.title(" Property Price Prediction")
 
     # Back button to dashboard
     if st.button("⬅ Back to Dashboard"):
