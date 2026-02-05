@@ -385,15 +385,13 @@ def prediction_page():
     supabase: Client = create_client(url, key)
 
 
-    def read_csv_from_supabase(file_name):
-        file = supabase.storage.from_("RealEstateStorage").download(file_name)
-        file_str = file.decode("utf-8")
-        return pd.read_csv(StringIO(file_str))
+    
 
     model = joblib.load("best_svm_model.pkl")
     preprocessor = joblib.load("pipeline.pkl")
     residual_std_log = joblib.load("residual_std_log.pkl")
-    data = read_csv_from_supabase("preprocessed.csv")
+    data = pd.read_csv("dataset/preprocessed_data.csv")
+
 
     with st.form("house_prediction_form"):
         selected_sub_county = st.selectbox("Select the Sub County", options=data['Sub_County'].unique())
