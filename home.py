@@ -235,7 +235,7 @@ def dashboard_page():
     user = st.session_state.get("user", None)
     name = user.display_name.split()[0] if user and user.display_name else "User"
 
-    st.title("🏡 Your Property Dashboard")
+    st.title(" Your Property Dashboard")
     st.markdown(f"### Welcome back!, **{name}** ")
 
     # ----------------- LAST LOGIN -----------------
@@ -247,9 +247,9 @@ def dashboard_page():
     # Dummy notifications
     st.markdown('<div class="dashboard-card"><h4 class="dashboard-title">🔔 New Notifications</h4>'
                 '<ul>'
-                '<li>📉 Rent prices dropped in Westlands</li>'
-                '<li>🏘 New 2-bedroom listings in Kilimani</li>'
-                '<li>⭐ A property you liked is now cheaper</li>'
+                '<li> Rent prices dropped in Westlands</li>'
+                '<li> New 2-bedroom listings in Kilimani</li>'
+                '<li> A property you liked is now cheaper</li>'
                 '</ul></div>', unsafe_allow_html=True)
 
     # ----------------- RECENTLY VIEWED PROPERTIES -----------------
@@ -283,9 +283,9 @@ def dashboard_page():
     # Dummy updates
     st.markdown('<div class="dashboard-card"><h4 class="dashboard-title"> What’s New on PriceScope?</h4>'
                 '<ul>'
-                '<li>🧠 Improved AI prediction accuracy</li>'
-                '<li>📊 Added neighborhood trend analysis</li>'
-                '<li>🔔 Smart alerts for price drops</li>'
+                '<li> Improved AI prediction accuracy</li>'
+                '<li> Added neighborhood trend analysis</li>'
+                '<li> Smart alerts for price drops</li>'
                 '</ul></div>', unsafe_allow_html=True)
 
     # ----------------- HELPFUL ARTICLES -----------------
