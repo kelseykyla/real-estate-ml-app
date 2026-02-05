@@ -16,6 +16,7 @@ import pickle
 import pandas as pd
 import numpy as np
 import joblib
+import os
 from supabase import create_client, Client
 from io import StringIO
 from datetime import datetime
@@ -379,9 +380,10 @@ def prediction_page():
     st.markdown("Enter property details below to get an AI-powered price estimate.")
 
     # Supabase Initialization
-    url = os.environ.get("supabase_url")
-    key = os.environ.get("supabase_key")
-    supabase: Client = create_client(url, key)  # type: ignore
+    url = st.secrets["SUPABASE_URL"]
+    key = st.secrets["SUPABASE_KEY"]
+    supabase: Client = create_client(url, key)
+
 
     def read_csv_from_supabase(file_name):
         file = supabase.storage.from_("RealEstateStorage").download(file_name)
