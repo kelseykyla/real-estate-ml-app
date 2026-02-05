@@ -23,67 +23,71 @@ from datetime import datetime
 import report
 
 # Public Landing Page
+import base64
+import streamlit as st
+
+
 def home_page():
 
+    # ---------- GLOBAL MINIMALIST STYLE ----------
     st.markdown("""
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+    html, body, [class*="css"]  {
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-<style>
-html, body, [class*="css"]  {
-    font-family: 'Inter', sans-serif;
-}
+    .hero-title {
+        font-size: 42px;
+        font-weight: 600;
+        color: #1b1b1b;
+        margin-bottom: 10px;
+    }
 
-.hero-title {
-    font-size: 44px;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 10px;
-    letter-spacing: -1px;
-}
+    .hero-sub {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 25px;
+    }
 
-.hero-sub {
-    font-size: 18px;
-    color: #4b5563;
-    margin-bottom: 25px;
-}
+    .section-card {
+        background-color: #ffffff;
+        padding: 28px;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
 
-.section-card {
-    background-color: #ffffff;
-    padding: 24px;
-    border-radius: 16px;
-    margin-bottom: 18px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.04);
-    border: 1px solid #f1f1f1;
-}
+    .stat-number {
+        font-size: 34px;
+        font-weight: 600;
+        color: #1b5e20;
+    }
 
-.stat-box {
-    text-align: center;
-    padding: 18px;
-}
+    .stat-label {
+        font-size: 14px;
+        color: #666;
+    }
 
-.stat-number {
-    font-size: 30px;
-    font-weight: 600;
-    color: #111827;
-}
+    .stButton>button {
+        background-color: #1b5e20;
+        color: white;
+        border-radius: 10px;
+        padding: 10px 24px;
+        border: none;
+        font-size: 15px;
+        transition: 0.3s ease;
+    }
 
-.stButton>button {
-    background-color: #111827;
-    color: white;
-    border-radius: 10px;
-    padding: 12px 26px;
-    font-size: 15px;
-    border: none;
-}
+    .stButton>button:hover {
+        background-color: #2e7d32;
+        color: white;
+        transform: translateY(-2px);
+    }
 
-.stButton>button:hover {
-    background-color: #000000;
-}
-</style>
-""", unsafe_allow_html=True)
+    </style>
+    """, unsafe_allow_html=True)
 
-
-    # ================= HEADER =================
+    # ---------- HEADER ----------
     col1, col2 = st.columns([3, 1])
 
     with col1:
@@ -91,77 +95,94 @@ html, body, [class*="css"]  {
         st.markdown('<div class="hero-sub">AI-powered insights to help you rent, buy, or invest with confidence.</div>', unsafe_allow_html=True)
 
     with col2:
-        if "user" in st.session_state:
-            user = st.session_state["user"]
-            display_name = user.display_name.split()[0] if user.display_name else user.uid
-            st.write(f"Welcome, {display_name} ")
-        else:
-            col3, col4 = st.columns([1, 1])
-            with col3:
+        if "user" not in st.session_state:
+            c1, c2 = st.columns(2)
+            with c1:
                 if st.button("Login"):
                     st.session_state["current_page"] = "login"
                     st.rerun()
-            with col4:
+            with c2:
                 if st.button("Sign Up"):
                     st.session_state["current_page"] = "signup"
                     st.rerun()
 
-    # ================= HERO IMAGE =================
-    st.markdown("""
-    <div style="display:flex; justify-content:center;">
-        <img src="data:image/jpeg;base64,{}" style="width:100%; height:500px; object-fit:cover; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+    # ---------- HERO IMAGE ----------
+    with open("./img/dapper.png", "rb") as f:
+        img_base64 = base64.b64encode(f.read()).decode()
+
+    st.markdown(f"""
+    <div style="display:flex; justify-content:center; margin-top:20px;">
+        <img src="data:image/png;base64,{img_base64}" 
+             style="width:100%; height:480px; object-fit:cover; border-radius:18px; box-shadow:0 12px 30px rgba(0,0,0,0.1);">
     </div>
-""".format(
-    __import__("base64").b64encode(open("./img/dapper.png", "rb").read()).decode()
-), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-
-    # ================= TRUST STATS =================
-    st.markdown("###  Platform Insights")
+    # ---------- STATS ----------
+    st.markdown("<br>", unsafe_allow_html=True)
     s1, s2, s3 = st.columns(3)
+
     with s1:
-        st.markdown('<div class="stat-box"><div class="stat-number">10,000+</div>Properties Analyzed</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style="text-align:center;">
+            <div class="stat-number">10,000+</div>
+            <div class="stat-label">Properties Analyzed</div>
+        </div>
+        """, unsafe_allow_html=True)
+
     with s2:
-        st.markdown('<div class="stat-box"><div class="stat-number">95%</div>Prediction Accuracy</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style="text-align:center;">
+            <div class="stat-number">95%</div>
+            <div class="stat-label">Prediction Accuracy</div>
+        </div>
+        """, unsafe_allow_html=True)
+
     with s3:
-        st.markdown('<div class="stat-box"><div class="stat-number">24/7</div>Instant Valuations</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style="text-align:center;">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Instant Valuations</div>
+        </div>
+        """, unsafe_allow_html=True)
 
     st.markdown("---")
 
-    # ================= MARKET TRENDS =================
-    st.markdown("##  What’s Happening in Real Estate Today?")
-    trend1, trend2, trend3 = st.columns(3)
+    # ---------- MARKET INFO ----------
+    st.markdown("## Market Intelligence")
+    c1, c2, c3 = st.columns(3)
 
-    with trend1:
-        st.markdown('<div class="section-card"><h4> Rising Rental Demand</h4><p>Urban neighborhoods are experiencing higher rental demand driven by population growth and lifestyle changes.</p></div>', unsafe_allow_html=True)
+    with c1:
+        st.markdown('<div class="section-card"><h4>Rising Rental Demand</h4><p>Urban neighborhoods are seeing increased rental activity driven by migration and lifestyle shifts.</p></div>', unsafe_allow_html=True)
 
-    with trend2:
-        st.markdown('<div class="section-card"><h4>🏗 Data is the New Agent</h4><p>Buyers and renters now rely on analytics instead of guesswork or word-of-mouth pricing.</p></div>', unsafe_allow_html=True)
+    with c2:
+        st.markdown('<div class="section-card"><h4>Data-Driven Pricing</h4><p>Investors and renters now rely on predictive analytics instead of guesswork.</p></div>', unsafe_allow_html=True)
 
-    with trend3:
-        st.markdown('<div class="section-card"><h4>📍 Micro-Location Value</h4><p>Neighborhood-level trends influence pricing more than general city averages.</p></div>', unsafe_allow_html=True)
+    with c3:
+        st.markdown('<div class="section-card"><h4>Location Matters More</h4><p>Neighborhood-level trends influence property value more than city averages.</p></div>', unsafe_allow_html=True)
 
     st.markdown("---")
 
-    # ================= BENEFITS =================
-    st.markdown("##  Why Use Our Platform?")
+    # ---------- BENEFITS ----------
+    st.markdown("## Why Choose PriceScope?")
     b1, b2 = st.columns(2)
 
     with b1:
-        st.markdown('<div class="section-card"><h4> AI-Powered Accuracy</h4><p>Our model analyzes historical and real-time data to produce reliable estimates.</p><h4>⚡ Instant Results</h4><p>No waiting for agents or manual appraisals.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-card"><h4>AI-Powered Accuracy</h4><p>Our models analyze historical and live data to provide reliable estimates.</p></div>', unsafe_allow_html=True)
 
     with b2:
-        st.markdown('<div class="section-card"><h4> Smarter Decisions</h4><p>Know if a property is overpriced or a good deal before committing.</p><h4>📉 Confidence with Ranges</h4><p>Prediction intervals backed by statistical modeling.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-card"><h4>Instant Results</h4><p>No waiting for agents or manual appraisals. Get insights immediately.</p></div>', unsafe_allow_html=True)
 
-    # ================= CTA =================
-    st.markdown("---")
-    st.markdown("###  Ready to estimate a property's value?")
+    # ---------- CALL TO ACTION ----------
+    st.markdown("<br>", unsafe_allow_html=True)
+    center = st.columns([1,2,1])[1]
 
-    c1, c2, c3 = st.columns([1,2,1])
-    with c2:
+    with center:
         if st.button("Make a Prediction", use_container_width=True):
-            st.session_state["current_page"] = "Prediction"
+            st.session_state["current_page"] = "prediction"
             st.rerun()
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
 
 st.session_state["notifications"] = []
 
