@@ -1,16 +1,18 @@
 def home():
     return "I'm home"
 
-def predition():
+def prediction():
     return "This is the prediction page."
 
 
 # Using Supabase to Store the csv file, access it and retrieve it.
     # Supabase Initialization
     
-    url = os.environ.get("supabase_url")
-    key = os.environ.get("supabase_key")
-    supabase: Client = create_client(url, key) # type: ignore
+    # Supabase Initialization (Streamlit Secrets)
+    url = st.secrets["supabase"]["url"]
+    key = st.secrets["supabase"]["key"]
+    supabase: Client = create_client(url, key)
+
 
 
     # Function to Read CSV from Supabase Storage

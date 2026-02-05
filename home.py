@@ -380,8 +380,8 @@ def prediction_page():
     st.markdown("Enter property details below to get an AI-powered price estimate.")
 
     # Supabase Initialization
-    url = st.secrets["SUPABASE_URL"]
-    key = st.secrets["SUPABASE_KEY"]
+    url = st.secrets["supabase"]["url"]
+    key = st.secrets["supabase"]["key"]
     supabase: Client = create_client(url, key)
 
 
