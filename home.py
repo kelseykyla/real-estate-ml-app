@@ -21,6 +21,8 @@ from supabase import create_client, Client
 from io import StringIO
 from datetime import datetime
 import report
+import altair as alt
+from datetime import datetime, timedelta
 
 # Public Landing Page
 import base64
@@ -237,6 +239,8 @@ def dashboard_page():
 
     st.title(" Your Property Dashboard")
     st.markdown(f"### Welcome back!, **{name}** ")
+
+     
 
     # ----------------- LAST LOGIN -----------------
     # Dummy last login (replace with real data from session or Supabase)
