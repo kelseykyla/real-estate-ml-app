@@ -15,7 +15,7 @@ import report
 from account import account_page  # Import the account page functionality
 from firebase_init import initialize_firebase  # Ensure Firebase initialization
 
-
+st.write("Home module path:", home.__file__)
 # Initialize Firebase
 initialize_firebase()
 
