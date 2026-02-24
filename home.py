@@ -25,6 +25,8 @@ import altair as alt
 from datetime import datetime, timedelta
 import base64
 
+st.write("Secrets available:", st.secrets)
+
  # ================= SUPABASE INITIALIZATION =================
 @st.cache_resource
 def init_supabase():
