@@ -161,8 +161,8 @@ def prediction_page():
             "Bathrooms": [baths],
         })
 
-        processed = preprocessor.transform(user_input)
-        log_pred = model.predict(processed)
+        
+        log_pred = model.predict(user_input)
         price = round(np.exp(log_pred[0]), -3)
 
         st.success(f"Predicted Rent: KES {price:,.0f}")
