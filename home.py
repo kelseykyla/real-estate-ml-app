@@ -23,11 +23,20 @@ from datetime import datetime
 import report
 import altair as alt
 from datetime import datetime, timedelta
-
-# Public Landing Page
 import base64
-import streamlit as st
 
+ # ================= SUPABASE INITIALIZATION =================
+@st.cache_resource
+def init_supabase():
+    try:
+        url = st.secrets["supabase"]["url"]
+        key = st.secrets["supabase"]["key"]
+        return create_client(url, key)
+    except Exception as e:
+        st.error(f"Supabase initialization failed: {e}")
+        return None
+
+supabase = init_supabase()
 
 def home_page():
 
@@ -423,18 +432,7 @@ def prediction_page():
 
     st.markdown("Enter property details below to get an AI-powered price estimate.")
 
- # ================= SUPABASE INITIALIZATION =================
-@st.cache_resource
-def init_supabase():
-    try:
-        url = st.secrets["supabase"]["url"]
-        key = st.secrets["supabase"]["key"]
-        return create_client(url, key)
-    except Exception as e:
-        st.error(f"Supabase initialization failed: {e}")
-        return None
 
-supabase = init_supabase()
 
 
     
