@@ -423,10 +423,18 @@ def prediction_page():
 
     st.markdown("Enter property details below to get an AI-powered price estimate.")
 
-    # Supabase Initialization
-    url = st.secrets["supabase"]["url"]
-    key = st.secrets["supabase"]["key"]
-    supabase: Client = create_client(url, key)
+ # ================= SUPABASE INITIALIZATION =================
+@st.cache_resource
+def init_supabase():
+    try:
+        url = st.secrets["supabase"]["url"]
+        key = st.secrets["supabase"]["key"]
+        return create_client(url, key)
+    except Exception as e:
+        st.error(f"Supabase initialization failed: {e}")
+        return None
+
+supabase = init_supabase()
 
 
     
