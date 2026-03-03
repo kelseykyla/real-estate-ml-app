@@ -11,38 +11,90 @@ import base64
 # ===================== HOME PAGE =====================
 def home_page():
 
+    # ---------- GLOBAL MINIMALIST STYLE ----------
     st.markdown("""
     <style>
     html, body, [class*="css"]  {
         font-family: 'Segoe UI', sans-serif;
     }
+
     .hero-title {
         font-size: 42px;
         font-weight: 600;
         color: #1b1b1b;
+        margin-bottom: 10px;
     }
+
     .hero-sub {
         font-size: 18px;
         color: #555;
+        margin-bottom: 25px;
     }
+
+    .section-card {
+        background-color: #ffffff;
+        padding: 28px;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+
+    .stat-number {
+        font-size: 34px;
+        font-weight: 600;
+        color: #1b5e20;
+    }
+
+    .stat-label {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .stButton>button {
+        background-color: #1b5e20;
+        color: white;
+        border-radius: 10px;
+        padding: 10px 24px;
+        border: none;
+        font-size: 15px;
+        transition: 0.3s ease;
+    }
+
+    .stButton>button:hover {
+        background-color: #2e7d32;
+        color: white;
+        transform: translateY(-2px);
+    }
+
     </style>
     """, unsafe_allow_html=True)
 
+    # ---------- HEADER ----------
     col1, col2 = st.columns([3, 1])
 
     with col1:
-        st.markdown('<div class="hero-title">Smarter Property Pricing Starts Here</div>', unsafe_allow_html=True)
-        st.markdown('<div class="hero-sub">AI-powered insights to help you rent, buy, or invest with confidence.</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="hero-title">Smarter Property Pricing Starts Here</div>',
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            '<div class="hero-sub">AI-powered insights to help you rent, buy, or invest with confidence.</div>',
+            unsafe_allow_html=True
+        )
 
     with col2:
         if "user" not in st.session_state:
-            if st.button("Login"):
-                st.session_state["current_page"] = "login"
-                st.rerun()
-            if st.button("Sign Up"):
-                st.session_state["current_page"] = "signup"
-                st.rerun()
+            c1, c2 = st.columns(2)
+            with c1:
+                if st.button("Login"):
+                    st.session_state["current_page"] = "login"
+                    st.rerun()
+            with c2:
+                if st.button("Sign Up"):
+                    st.session_state["current_page"] = "signup"
+                    st.rerun()
 
+    # ---------- HERO IMAGE ----------
     try:
         with open("./img/dapper.png", "rb") as f:
             img_base64 = base64.b64encode(f.read()).decode()
@@ -50,12 +102,92 @@ def home_page():
         st.markdown(f"""
         <div style="display:flex; justify-content:center; margin-top:20px;">
             <img src="data:image/png;base64,{img_base64}" 
-                 style="width:100%; height:480px; object-fit:cover; border-radius:18px;">
+                 style="width:100%; height:480px; object-fit:cover; border-radius:18px; box-shadow:0 12px 30px rgba(0,0,0,0.1);">
         </div>
         """, unsafe_allow_html=True)
     except:
-        pass
+        st.warning("Hero image not found.")
 
+    # ---------- STATS ----------
+    st.markdown("<br>", unsafe_allow_html=True)
+    s1, s2, s3 = st.columns(3)
+
+    with s1:
+        st.markdown("""
+        <div style="text-align:center;">
+            <div class="stat-number">10,000+</div>
+            <div class="stat-label">Properties Analyzed</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with s2:
+        st.markdown("""
+        <div style="text-align:center;">
+            <div class="stat-number">95%</div>
+            <div class="stat-label">Prediction Accuracy</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with s3:
+        st.markdown("""
+        <div style="text-align:center;">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Instant Valuations</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ---------- MARKET INFO ----------
+    st.markdown("## Market Intelligence")
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        st.markdown(
+            '<div class="section-card"><h4>Rising Rental Demand</h4><p>Urban neighborhoods are seeing increased rental activity driven by migration and lifestyle shifts.</p></div>',
+            unsafe_allow_html=True
+        )
+
+    with c2:
+        st.markdown(
+            '<div class="section-card"><h4>Data-Driven Pricing</h4><p>Investors and renters now rely on predictive analytics instead of guesswork.</p></div>',
+            unsafe_allow_html=True
+        )
+
+    with c3:
+        st.markdown(
+            '<div class="section-card"><h4>Location Matters More</h4><p>Neighborhood-level trends influence property value more than city averages.</p></div>',
+            unsafe_allow_html=True
+        )
+
+    st.markdown("---")
+
+    # ---------- BENEFITS ----------
+    st.markdown("## Why Choose PriceScope?")
+    b1, b2 = st.columns(2)
+
+    with b1:
+        st.markdown(
+            '<div class="section-card"><h4>AI-Powered Accuracy</h4><p>Our models analyze historical and live data to provide reliable estimates.</p></div>',
+            unsafe_allow_html=True
+        )
+
+    with b2:
+        st.markdown(
+            '<div class="section-card"><h4>Instant Results</h4><p>No waiting for agents or manual appraisals. Get insights immediately.</p></div>',
+            unsafe_allow_html=True
+        )
+
+    # ---------- CALL TO ACTION ----------
+    st.markdown("<br>", unsafe_allow_html=True)
+    center = st.columns([1,2,1])[1]
+
+    with center:
+        if st.button("Make a Prediction", width="stretch"):
+            st.session_state["current_page"] = "prediction"
+            st.rerun()
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
 
 # ===================== USER DASHBOARD =====================
 def dashboard_page():
