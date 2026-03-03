@@ -69,37 +69,39 @@ def sidebar_menu():
 # Main navigation logic
 def main():
 
-    # NOT LOGGED IN
+    # Ensure page exists
+    if "current_page" not in st.session_state:
+        st.session_state["current_page"] = "home"
+
+    page = st.session_state["current_page"]
+
+    # ================= NOT LOGGED IN =================
     if "user" not in st.session_state:
 
-        if st.session_state["current_page"] == "home":
+        if page == "home":
             home.home_page()
 
-        elif st.session_state["current_page"] == "login":
+        elif page == "login":
             login_page()
 
-        elif st.session_state["current_page"] == "signup":
+        elif page == "signup":
             signup_page()
-        
-        # Direct dashboard routing after login
-        if st.session_state["current_page"] == "dashboard":
-            if st.session_state.get("is_admin"):
-                home.admin_dashboard()
-            else:
-                home.dashboard_page()
-            return
 
+        # Safety fallback
+        else:
+            st.session_state["current_page"] = "home"
+            st.rerun()
 
-    # LOGGED IN
+    # ================= LOGGED IN =================
     else:
+
         app = sidebar_menu()
 
         if app == "Dashboard":
             if st.session_state.get("is_admin"):
-                home.admin_dashboard()   # 👑 Admin sees admin dashboard
+                home.admin_dashboard()
             else:
-                home.dashboard_page()    # 👤 Normal user sees user dashboard
-
+                home.dashboard_page()
 
         elif app == "Prediction":
             home.prediction_page()
