@@ -292,47 +292,91 @@ def dashboard_page():
 
 # ===================== ADMIN DASHBOARD =====================
 def admin_dashboard():
-
     st.title("🛠 Admin Dashboard")
-    st.markdown("System overview and analytics")
+    st.markdown("Overview of system performance and user activity")
 
     st.markdown("---")
+    st.subheader(" Platform Statistics")
 
-    # Metrics
     col1, col2, col3 = st.columns(3)
-    col1.metric("Total Users", "1,284")
-    col2.metric("Total Listings", "856")
-    col3.metric("Predictions Today", "73")
+    col1.metric("👥 Total Registered Users", "1,284")
+    col2.metric("🏠 Total Listings", "856")
+    col3.metric("📈 New Users This Month", "73")
 
     st.markdown("---")
+    st.subheader(" Growth Trends")
 
-    # User Growth Chart
-    st.subheader("User Growth Trends")
+    import pandas as pd
+    import numpy as np
 
-    months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"]
-    users = [200,250,300,380,420,500,610,730]
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    last_year_users = [50, 60, 55, 70, 65, 80, 90, 85, 100, 95, 110, 120]
+    this_year_users = [80, 90, 95, 110, 105, 130, 140, 150, 160, 170, 180, 200]
 
     df_users = pd.DataFrame({
         "Month": months,
-        "Users": users
+        "Last Year": last_year_users,
+        "This Year": this_year_users
     }).set_index("Month")
 
     st.line_chart(df_users)
 
     st.markdown("---")
+    st.subheader("🏘 Listing Activity Trends")
 
-    # Listing Activity
-    st.subheader("Listing Activity")
+    last_year_listings = np.random.randint(20, 50, 12)
+    this_year_listings = np.random.randint(40, 80, 12)
 
     df_listings = pd.DataFrame({
-        "Location": ["Westlands","Kilimani","Karen","Lavington","Embakasi"],
-        "Listings": [120,95,70,85,60]
-    }).set_index("Location")
+        "Month": months,
+        "Last Year Listings": last_year_listings,
+        "This Year Listings": this_year_listings
+    }).set_index("Month")
 
     st.bar_chart(df_listings)
 
     st.markdown("---")
-    st.caption("Admin Panel • PriceScope Monitoring")
+    st.subheader(" Property Insights")
+
+    colA, colB = st.columns(2)
+
+    with colA:
+        st.info("**Last Posted Property**\n\n3 Bedroom Apartment in Kilimani")
+
+        st.success(" **Most Popular Location**\n\nWestlands")
+
+        st.warning("**Least Popular Location**\n\nEmbakasi")
+
+    with colB:
+        st.metric("💰 Average Rent Price", "KES 78,500")
+        st.metric("⭐ Most Viewed Property", "2BR Apartment – Kilimani")
+
+    st.markdown("---")
+    st.subheader("👤 User Activity & Feedback")
+
+    if st.button("View User Comments"):
+        comments = [
+            "Alice: Love the prediction feature!",
+            "Brian: Please add house sale predictions too.",
+            "Cynthia: Very accurate for Westlands listings.",
+            "David: Add price history charts please."
+        ]
+        for c in comments:
+            st.write("💬", c)
+
+    if st.button("View User Activity Log"):
+        activity = [
+            "User123 searched for 2BR in Kilimani",
+            "User456 made a prediction for Westlands property",
+            "User789 viewed listing in Karen",
+            "User321 saved property in Parklands"
+        ]
+        for a in activity:
+            st.write("📌", a)
+
+    st.markdown("---")
+    st.caption("Admin Panel • PriceScope System Monitoring")
+
 # ===================== PREDICTION PAGE =====================
 def prediction_page():
 
