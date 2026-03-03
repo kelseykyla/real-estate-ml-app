@@ -290,7 +290,49 @@ def dashboard_page():
     st.markdown("---")
     st.write("© 2026 Kelsey Kyla | All rights reserved.")
 
+# ===================== ADMIN DASHBOARD =====================
+def admin_dashboard():
 
+    st.title("🛠 Admin Dashboard")
+    st.markdown("System overview and analytics")
+
+    st.markdown("---")
+
+    # Metrics
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Total Users", "1,284")
+    col2.metric("Total Listings", "856")
+    col3.metric("Predictions Today", "73")
+
+    st.markdown("---")
+
+    # User Growth Chart
+    st.subheader("User Growth Trends")
+
+    months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"]
+    users = [200,250,300,380,420,500,610,730]
+
+    df_users = pd.DataFrame({
+        "Month": months,
+        "Users": users
+    }).set_index("Month")
+
+    st.line_chart(df_users)
+
+    st.markdown("---")
+
+    # Listing Activity
+    st.subheader("Listing Activity")
+
+    df_listings = pd.DataFrame({
+        "Location": ["Westlands","Kilimani","Karen","Lavington","Embakasi"],
+        "Listings": [120,95,70,85,60]
+    }).set_index("Location")
+
+    st.bar_chart(df_listings)
+
+    st.markdown("---")
+    st.caption("Admin Panel • PriceScope Monitoring")
 # ===================== PREDICTION PAGE =====================
 def prediction_page():
 
