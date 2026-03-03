@@ -178,16 +178,19 @@ def home_page():
             unsafe_allow_html=True
         )
 
-    # ---------- CALL TO ACTION ----------
-    st.markdown("<br>", unsafe_allow_html=True)
-    center = st.columns([1,2,1])[1]
+# ---------- CALL TO ACTION ----------
+st.markdown("<br>", unsafe_allow_html=True)
+center = st.columns([1,2,1])[1]
 
-    with center:
-        if st.button("Make a Prediction", width="stretch"):
+with center:
+    if st.button("Make a Prediction", width="stretch"):
+        if "user" not in st.session_state:
+            st.session_state["current_page"] = "login"
+        else:
             st.session_state["current_page"] = "prediction"
-            st.rerun()
+        st.rerun()
 
-    st.markdown("<br><br>", unsafe_allow_html=True)
+st.markdown("<br><br>", unsafe_allow_html=True)
 
 # ===================== USER DASHBOARD =====================
 def dashboard_page():
