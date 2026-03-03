@@ -2,21 +2,13 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-import base64
-from supabase import create_client
+from supabase import create_client, Client
 from datetime import datetime
 import report
+import base64
 
 
-# ================= SUPABASE INITIALIZATION =================
-@st.cache_resource
-def init_supabase():
-    url = st.secrets["supabase"]["url"]
-    key = st.secrets["supabase"]["key"]
-    return create_client(url, key)
-
-
-# ================= LANDING PAGE =================
+# ===================== HOME PAGE =====================
 def home_page():
 
     st.markdown("""
@@ -32,13 +24,6 @@ def home_page():
     .hero-sub {
         font-size: 18px;
         color: #555;
-    }
-    .section-card {
-        background-color: #ffffff;
-        padding: 28px;
-        border-radius: 16px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-        margin-bottom: 20px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -61,6 +46,7 @@ def home_page():
     try:
         with open("./img/dapper.png", "rb") as f:
             img_base64 = base64.b64encode(f.read()).decode()
+
         st.markdown(f"""
         <div style="display:flex; justify-content:center; margin-top:20px;">
             <img src="data:image/png;base64,{img_base64}" 
@@ -71,16 +57,56 @@ def home_page():
         pass
 
 
-# ================= USER DASHBOARD =================
+# ===================== USER DASHBOARD =====================
 def dashboard_page():
 
     user = st.session_state.get("user", None)
     name = user.display_name.split()[0] if user and user.display_name else "User"
 
-    st.title("Your Property Dashboard")
-    st.markdown(f"Welcome back, **{name}**")
+    st.title(" Your Property Dashboard")
+    st.markdown(f"### Welcome back, **{name}** ")
 
-    st.markdown("### Recently Viewed Properties")
+    st.markdown("---")
+
+    # ---------- METRICS ----------
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Predictions Made", "124")
+    col2.metric("Saved Properties", "18")
+    col3.metric("Favorite Location", "Westlands")
+    col4.metric("Average Rent", "KES 78,500")
+
+    st.markdown("---")
+
+    # ---------- RENT TREND CHART ----------
+    st.subheader(" Rent Trend Overview")
+
+    months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"]
+    rents = [65000,67000,69000,71000,72000,74000,76000,78500]
+
+    df_rent = pd.DataFrame({
+        "Month": months,
+        "Average Rent": rents
+    }).set_index("Month")
+
+    st.line_chart(df_rent)
+
+    st.markdown("---")
+
+    # ---------- LOCATION DISTRIBUTION ----------
+    st.subheader(" Popular Locations")
+
+    df_locations = pd.DataFrame({
+        "Location": ["Westlands","Kilimani","Karen","Lavington","Embakasi"],
+        "Listings": [120,95,70,85,60]
+    }).set_index("Location")
+
+    st.bar_chart(df_locations)
+
+    st.markdown("---")
+
+    # ---------- RECENTLY VIEWED ----------
+    st.subheader(" Recently Viewed Properties")
+
     col1, col2, col3 = st.columns(3)
 
     properties = [
@@ -94,63 +120,72 @@ def dashboard_page():
             st.image(prop["image"], width="stretch")
             st.markdown(f"**{prop['title']}**")
 
-    if st.button("Predict Property Price"):
+    st.markdown("---")
+
+    # ---------- NOTIFICATIONS ----------
+    st.subheader(" Notifications")
+
+    notifications = [
+        "Rent prices dropped in Westlands",
+        "New 2-bedroom listing in Kilimani",
+        "A saved property is now cheaper"
+    ]
+
+    for note in notifications:
+        st.write("•", note)
+
+    st.markdown("---")
+
+    # ---------- FEEDBACK ----------
+    st.subheader(" Send Feedback")
+
+    comment = st.text_area("Write your message here...", height=100)
+    if st.button("Submit Feedback"):
+        if comment:
+            st.success("Message sent successfully!")
+        else:
+            st.warning("Please enter a message.")
+
+    st.markdown("---")
+
+    if st.button(" Predict Property Price"):
         st.session_state["current_page"] = "prediction"
         st.rerun()
 
-
-# ================= ADMIN DASHBOARD =================
-def admin_dashboard():
-
-    st.title("Admin Dashboard")
-    st.subheader("Platform Statistics")
-
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Total Users", "1,284")
-    col2.metric("Total Listings", "856")
-    col3.metric("New Users This Month", "73")
-
-    months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-    last_year = [50,60,55,70,65,80,90,85,100,95,110,120]
-    this_year = [80,90,95,110,105,130,140,150,160,170,180,200]
-
-    df = pd.DataFrame({
-        "Month": months,
-        "Last Year": last_year,
-        "This Year": this_year
-    }).set_index("Month")
-
-    st.line_chart(df)
+    st.markdown("---")
+    st.write("© 2026 Kelsey Kyla | All rights reserved.")
 
 
-# ================= PREDICTION PAGE =================
+# ===================== PREDICTION PAGE =====================
 def prediction_page():
 
-    st.title("Property Price Prediction")
+    st.title(" Property Price Prediction")
 
-    if st.button("Back to Dashboard"):
+    if st.button("⬅ Back to Dashboard"):
         st.session_state["current_page"] = "dashboard"
         st.rerun()
 
-    supabase = init_supabase()
+    st.markdown("Enter property details below to get an AI-powered estimate.")
+
+    # Supabase inside function
+    url = st.secrets["supabase"]["url"]
+    key = st.secrets["supabase"]["key"]
+    supabase: Client = create_client(url, key)
 
     model = joblib.load("best_svm_model.pkl")
-    preprocessor = joblib.load("pipeline.pkl")
-    residual_std_log = joblib.load("residual_std_log.pkl")
     data = pd.read_csv("dataset/preprocessed_data.csv")
 
-    with st.form("prediction_form"):
+    with st.form("house_prediction_form"):
         sub = st.selectbox("Sub County", data["Sub_County"].unique())
         neigh = st.selectbox("Neighborhood", data["Neighborhood"].unique())
         sqm = st.number_input("Square Meters", min_value=1)
         beds = st.selectbox("Bedrooms", sorted(data["Bedrooms"].dropna().unique()))
         baths = st.selectbox("Bathrooms", sorted(data["Bathrooms"].dropna().unique()))
-
         submitted = st.form_submit_button("Predict")
 
     if submitted:
         if "user" not in st.session_state:
-            st.warning("Login required.")
+            st.warning("You need to log in to make a prediction.")
             return
 
         user_input = pd.DataFrame({
@@ -161,25 +196,26 @@ def prediction_page():
             "Bathrooms": [baths],
         })
 
-        
-        log_pred = model.predict(user_input)
-        price = round(np.exp(log_pred[0]), -3)
+        log_prediction = model.predict(user_input)
+        predicted_price = round(np.exp(log_prediction[0]), -3)
 
-        st.success(f"Predicted Rent: KES {price:,.0f}")
-
-        prediction_record = {
-            "user_id": st.session_state["user"].uid,
-            "sub_county": sub,
-            "neighborhood": neigh,
-            "sq_mtrs": int(sqm),
-            "bedrooms": int(beds),
-            "bathrooms": int(baths),
-            "predicted_price": float(price),
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
+        st.success(f"Predicted Rent Price (KES): {predicted_price:,.0f}")
 
         try:
+            prediction_record = {
+                "user_id": st.session_state["user"].uid,
+                "sub_county": sub,
+                "neighborhood": neigh,
+                "sq_mtrs": int(sqm),
+                "bedrooms": int(beds),
+                "bathrooms": int(baths),
+                "predicted_price": float(predicted_price),
+                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            }
+
             supabase.table("prediction").insert(prediction_record).execute()
-            st.success("Stored successfully.")
         except Exception as e:
             st.error(f"Database error: {e}")
+
+    st.markdown("---")
+    st.write("© 2026 Kelsey Kyla | All rights reserved.")
