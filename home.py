@@ -436,7 +436,7 @@ def prediction_page():
 
             supabase.table("prediction").insert(prediction_record).execute()
         except Exception as e:
-            st.error(f".")
+            st.error(".")
 
     st.markdown("---")
     st.write("© 2026 Kelsey Kyla | All rights reserved.")
